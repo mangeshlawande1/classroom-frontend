@@ -12,7 +12,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import {DataTable} from "@/components/refine-ui/data-table/data-table.tsx";
 
-const SubjectsList = () => {
+const List = () => {
     const [searchQuery, setSearchQuery] =useState('');
     const [selectedDepartments, setSelectedDepartments] = useState('all');
 
@@ -42,7 +42,7 @@ const SubjectsList = () => {
            },
            {
                id: 'department',
-               accessorKey: 'department',
+               accessorKey: 'department.name',
                size: 200,
                header:() => <p className='column-title ml-2'>Department</p>,
                cell:({getValue}) => <Badge variant='secondary'>{getValue<string>()}</Badge>,
@@ -123,4 +123,4 @@ const SubjectsList = () => {
         </ListView>
     )
 }
-export default SubjectsList
+export default List

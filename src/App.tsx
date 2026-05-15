@@ -16,9 +16,8 @@ import Dashboard from "@/pages/Dashboard.tsx";
 import {Home, BookOpen } from  "lucide-react";
 import {Layout} from "@/components/refine-ui/layout/layout.tsx";
 import {Outlet} from "react-router"
-import SubjectsList from "./pages/subjects/SubjectsList.tsx";
+import List from "./pages/subjects/list.tsx";
 import SubjectsCreate from "@/pages/subjects/SubjectsCreate.tsx";
-
 function App() {
   return (
     <BrowserRouter>
@@ -58,7 +57,7 @@ function App() {
                       <Route path='/' element={<Dashboard />} />
 
                       <Route path='subjects' >
-                          <Route index element={<SubjectsList/>} />
+                          <Route index element={<List/>} />
                           <Route path='create' element={<SubjectsCreate />} />
                       </Route>
 
