@@ -17,9 +17,9 @@ import {Home, BookOpen, GraduationCap} from "lucide-react";
 import {Layout} from "@/components/refine-ui/layout/layout.tsx";
 import {Outlet} from "react-router"
 import SubjectsList from "./pages/subjects/list.tsx";
-import SubjectCreate from "./pages/subjects/create.tsx";
+import SubjectsCreate from "./pages/subjects/create.tsx";
 import ClassesList from "./pages/classes/list.tsx";
-import ClassesCreate from "@/pages/classes/create.tsx";
+import ClassesCreate from "./pages/classes/create.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -67,11 +67,11 @@ function App() {
 
                       <Route path='subjects' >
                           <Route index element={<SubjectsList/>} />
-                          <Route path='create' element={<SubjectCreate />} />
+                          <Route path='create' element={<SubjectsCreate />} />
                       </Route>
                       <Route path='classes' >
-                          {/*<Route index element={<ClassesList />} />*/}
-                          <Route path='create' element={<ClassesCreate />} />
+                          <Route index element={<ClassesCreate />} />
+                          <Route path='create' element={<ClassesList />} />
                       </Route>
 
                   </Route>

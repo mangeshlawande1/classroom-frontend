@@ -1,5 +1,5 @@
 import {createDataProvider,CreateDataProviderOptions } from '@refinedev/rest';
-import {BACKEND_BASE_URL, subjects} from "@/constants";
+import {BACKEND_BASE_URL} from "@/constants";
 import {ListResponse} from "@/types";
 
 const options: CreateDataProviderOptions = {
@@ -24,12 +24,12 @@ const options: CreateDataProviderOptions = {
       return params;
     },
     mapResponse: async (response ) =>{
-      const payload: ListResponse = await  response.json();
+        const payload: ListResponse = await  response.clone().json();
 
       return payload.data ?? [];
     },
     getTotalCount: async (response) =>  {
-      const payload: ListResponse = await  response.json();
+      const payload: ListResponse = await  response.clone().json();
 
       return payload.pagination?.total ?? payload.data?.length ?? 0 ;
     }
