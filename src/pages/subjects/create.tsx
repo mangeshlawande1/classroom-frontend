@@ -2,7 +2,7 @@ import React from 'react'
 
 const Create = () => {
     return (
-        <div>SubjectsCreate</div>
+        <div>Create</div>
     )
 }
 export default Create

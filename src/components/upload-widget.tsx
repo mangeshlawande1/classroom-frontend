@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
-import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/constants";
+import {ALLOWED_TYPES, MAX_FILE_SIZE, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/constants";
 import { UploadWidgetValue } from "@/types";
 
 type UploadWidgetProps = {
@@ -47,8 +47,8 @@ const UploadWidget = ({
                     uploadPreset: CLOUDINARY_UPLOAD_PRESET,
                     multiple: false,
                     folder: "uploads",
-                    maxFileSize: 5000000,
-                    clientAllowedFormats: ["png", "jpg", "jpeg", "webp"],
+                    maxFileSize: MAX_FILE_SIZE,
+                    clientAllowedFormats: ALLOWED_TYPES.map((t) => t.split("/")[1]),
                 },
                 (error: any, result: any) => {
                     if (!error && result.event === "success") {
@@ -110,7 +110,7 @@ const UploadWidget = ({
                             </p>
 
                             <p className="upload-text">
-                                PNG, JPG up to 5MB
+                                PNG, JPG, WEBP up to 3MB
                             </p>
                         </div>
                     </div>
