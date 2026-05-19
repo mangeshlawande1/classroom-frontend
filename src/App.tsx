@@ -70,8 +70,8 @@ function App() {
                           <Route path='create' element={<SubjectsCreate />} />
                       </Route>
                       <Route path='classes' >
-                          <Route index element={<ClassesCreate />} />
-                          <Route path='create' element={<ClassesList />} />
+                          <Route index element={<ClassesList />} />
+                          <Route path='create' element={<ClassesCreate />} />
                       </Route>
 
                   </Route>

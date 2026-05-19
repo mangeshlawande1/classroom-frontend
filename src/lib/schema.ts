@@ -52,10 +52,10 @@ export const classSchema = z.object({
     status: z.enum(["active", "inactive"]),
     bannerUrl: z
         .string({ required_error: "Class banner is required" })
-        .min(1, "Class banner is required").optional(),
+        .min(1, "Class banner is required"),
     bannerCldPubId: z
         .string({ required_error: "Banner reference is required" })
-        .min(1, "Banner reference is required").optional(),
+        .min(1, "Banner reference is required"),
     inviteCode: z.string().optional(),
     schedules: z.array(scheduleSchema).optional(),
 });
