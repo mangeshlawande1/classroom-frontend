@@ -54,7 +54,7 @@ const Show = () => {
             <ShowViewHeader resource='classes' title='Class Details'/>
             <div className='banner ' >
                 { bannerCldPubId ? <AdvancedImage alt='Class-Banner '
-                                            cldImg={bannerPhoto(bannerCldPubId ?? "",
+                                            cldImg={bannerPhoto(bannerCldPubId,
                                                 name)} /> : <div className='placeholder' />}
                 <Card className='details-card mt-6 '>
                     <div className='details-header' >
