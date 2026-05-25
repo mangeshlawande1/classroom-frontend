@@ -54,7 +54,7 @@ function App() {
                       name:'classes',
                       list:'/classes',
                       create:'/classes/create',
-                      show:'classes/show/:id',
+                      show:'/classes/show/:id',
                       meta:{
                           label:'Classes', icon:<GraduationCap />
                       }

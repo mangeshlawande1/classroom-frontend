@@ -40,7 +40,7 @@ const Show = () => {
         .join('');
 
     const placeholderUrl = `https://placehold.co/600x400?text=${encodeURIComponent(teacherInitials || 'NA')}`;
-    const {bannerUrl, name, description,
+    const { name, description,
         status,
         capacity,
         bannerCldPubId,
@@ -48,12 +48,12 @@ const Show = () => {
         teacher,
         department,
         } = classDetails;
-    console.log(bannerUrl)
+
     return (
         <ShowView className='class-view class-show'>
             <ShowViewHeader resource='classes' title='Class Details'/>
             <div className='banner ' >
-                {bannerUrl ? <AdvancedImage alt='Class-Banner '
+                { bannerCldPubId ? <AdvancedImage alt='Class-Banner '
                                             cldImg={bannerPhoto(bannerCldPubId ?? "",
                                                 name)} /> : <div className='placeholder' />}
                 <Card className='details-card mt-6 '>

@@ -21,6 +21,9 @@ export const bannerPhoto = (
     name: string
 ) => {
 
+    if(!imageCldPubId || !name ){
+        throw new Error("Image Cld PubId and name is required for bannerPhoto");
+    }
     const safeName = name
         .replace(/[^\w\s-]/g, "")
         .trim();
