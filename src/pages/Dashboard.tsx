@@ -268,27 +268,27 @@ const Dashboard = () => {
                 <div className="grid gap-4">
                     <Card className="hover:shadow-md transition-shadow">
                         <CardHeader>
-                            <CardTitle>New Classes (last 5)</CardTitle>
+                            <CardTitle>Recent Classes</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-semibold">
                                 {newestClasses.length}
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Most recent classes added
+                                Last 5 classes added
                             </p>
                         </CardContent>
                     </Card>
                     <Card className="hover:shadow-md transition-shadow">
                         <CardHeader>
-                            <CardTitle>New Teachers (last 5)</CardTitle>
+                            <CardTitle>Recent Teachers</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-semibold">
                                 {newestTeachers.length}
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Most recent teachers added
+                                Last 5 teachers added
                             </p>
                         </CardContent>
                     </Card>

@@ -48,7 +48,7 @@ type SubjectUser = {
 const SubjectsShow = () => {
     const Link = useLink();
     const { id } = useParams();
-    const subjectId = id ?? "";
+    const subjectId = id ?? undefined;
 
     const { query } = useShow<SubjectDetails>({
         resource: "subjects",
@@ -184,10 +184,13 @@ const SubjectsShow = () => {
     const classesTable = useTable<SubjectClass>({
         columns: classColumns,
         refineCoreProps: {
-            resource: `subjects/${subjectId}/classes`,
+            resource: subjectId ? `subjects/${subjectId}/classes` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
+            },
+            queryOptions: {
+                enabled: !!subjectId,
             },
         },
     });
@@ -195,7 +198,7 @@ const SubjectsShow = () => {
     const teachersTable = useTable<SubjectUser>({
         columns: userColumns,
         refineCoreProps: {
-            resource: `subjects/${subjectId}/users`,
+            resource: subjectId ? `subjects/${subjectId}/users` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
@@ -209,13 +212,16 @@ const SubjectsShow = () => {
                     },
                 ],
             },
+            queryOptions: {
+                enabled: !!subjectId,
+            },
         },
     });
 
     const studentsTable = useTable<SubjectUser>({
         columns: userColumns,
         refineCoreProps: {
-            resource: `subjects/${subjectId}/users`,
+            resource: subjectId ? `subjects/${subjectId}/users` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
@@ -228,6 +234,9 @@ const SubjectsShow = () => {
                         value: "student",
                     },
                 ],
+            },
+            queryOptions: {
+                enabled: !!subjectId,
             },
         },
     });

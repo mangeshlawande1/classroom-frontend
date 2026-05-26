@@ -21,7 +21,10 @@ import { Separator } from "@/components/ui/separator";
 import type { User } from "@/types";
 
 const joinSchema = z.object({
-    inviteCode: z.string().min(3, "Invite code is required"),
+    inviteCode: z.preprocess(
+        (val) => (typeof val === "string" ? val.trim() : ""),
+        z.string().min(3, "Invite code is required")
+    ),
 });
 
 type JoinFormValues = z.infer<typeof joinSchema>;
@@ -46,19 +49,28 @@ const EnrollmentsJoin = () => {
     const onSubmit = async (values: JoinFormValues) => {
         if (!currentUser?.id) return;
 
-        const response = await joinEnrollment({
-            resource: "enrollments/join",
-            values: {
-                inviteCode: values.inviteCode,
-                studentId: currentUser.id,
-            },
-        });
+        try {
+            const trimmedCode = typeof values.inviteCode === "string" ? values.inviteCode.trim() : values.inviteCode;
+            const response = await joinEnrollment({
+                resource: "enrollments/join",
+                values: {
+                    inviteCode: trimmedCode,
+                    studentId: currentUser.id,
+                },
+            });
 
-        navigate("/enrollments/confirm", {
-            state: {
-                enrollment: response?.data,
-            },
-        });
+            navigate("/enrollments/confirm", {
+                state: {
+                    enrollment: response?.data,
+                },
+            });
+        } catch (error) {
+            console.error("Join failed:", error);
+            form.setError("root", {
+                type: "manual",
+                message: error instanceof Error ? error.message : "Failed to join class. Please check your invite code and try again.",
+            });
+        }
     };
 
     const isSubmitDisabled = isPending || !currentUser?.id || !inviteCode;
