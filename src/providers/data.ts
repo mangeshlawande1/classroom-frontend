@@ -1,119 +1,87 @@
-import {createDataProvider,CreateDataProviderOptions } from '@refinedev/rest';
-import {BACKEND_BASE_URL} from "@/constants";
-import {CreateResponse, GetOneResponse, ListResponse} from "`@/types`";
-import {HttpError} from "@refinedev/core";
+import { createDataProvider, CreateDataProviderOptions } from "@refinedev/rest";
 
-if(!BACKEND_BASE_URL){
-  throw new Error('BACKEND_BASE_URL is not configured. Please set VITE_BACKEND_BASE_URL in your .env file.');
-}
-const buildHttpError = async(response:Response):Promise<HttpError> => {
-  let message = 'Request Failed.';
+import { CreateResponse, GetOneResponse, ListResponse } from "@/types";
+import { BACKEND_BASE_URL } from "@/constants";
 
-  try{
-  const payload = (await response.json()) as {message?: string};
-
-  if( payload?.message) message = payload.message;
-  }catch{
-    //Ignore error
-  }
-  return {
-    message,
-    statusCode: response.status,
-  }
-}
 const options: CreateDataProviderOptions = {
   getList: {
-    getEndpoint: ({resource }) => resource,
+    getEndpoint: ({ resource }) => resource,
 
-    buildQueryParams: async ({resource, pagination, filters }) =>{
-      const page = pagination?.currentPage ?? 1;
-      const pageSize = pagination?.pageSize ?? 10;
+    buildQueryParams: async ({ resource, pagination, filters }) => {
+      const params: Record<string, string | number> = {};
 
-      const params: Record<string, string|number> = { page, limit: pageSize}
-      filters?.forEach((filter)=> {
-        const field = 'field' in filter ? filter.field : '' ;
+      if (pagination?.mode !== "off") {
+        const page = pagination?.currentPage ?? 1;
+        const pageSize = pagination?.pageSize ?? 10;
 
+        params.page = page;
+        params.limit = pageSize;
+      }
+
+      filters?.forEach((filter) => {
+        const field = "field" in filter ? filter.field : "";
         const value = String(filter.value);
 
-        if(resource === 'subjects'){
-          if(field === 'department') params.department = value;
-          if(field ==='name' || field === 'code') params.search = value;
+        if (field === "role") {
+          params.role = value;
         }
 
-        if(resource === 'classes'){
-          if(field === 'name') params.search = value;
-          if(field === 'subject') params.subject = value;
-          if(field ==='teacher') params.teacher = value;
+        if (resource === "departments") {
+          if (field === "name" || field === "code") params.search = value;
         }
-      })
+
+        if (resource === "users") {
+          if (field === "search" || field === "name" || field === "email") {
+            params.search = value;
+          }
+        }
+
+        if (resource === "subjects") {
+          if (field === "department") params.department = value;
+          if (field === "name" || field === "code") params.search = value;
+        }
+
+        if (resource === "classes") {
+          if (field === "name") params.search = value;
+          if (field === "subject") params.subject = value;
+          if (field === "teacher") params.teacher = value;
+        }
+      });
 
       return params;
     },
-    mapResponse: async (response ) =>{
-      if(!response.ok) throw await buildHttpError(response)
-        const payload: ListResponse = await  response.clone().json();
 
+    mapResponse: async (response) => {
+      const payload: ListResponse = await response.json();
       return payload.data ?? [];
     },
-    getTotalCount: async (response) =>  {
-      if(!response.ok) throw await buildHttpError(response)
-      const payload: ListResponse = await  response.clone().json();
 
-      return payload.pagination?.total ?? payload.data?.length ?? 0 ;
-    }
+    getTotalCount: async (response) => {
+      const payload: ListResponse = await response.json();
+      return payload.pagination?.total ?? payload.data?.length ?? 0;
+    },
   },
 
-  create :{
-    getEndpoint:({resource }) => resource,
+  create: {
+    getEndpoint: ({ resource }) => resource,
 
-    buildBodyParams:async({variables}) => variables,
+    buildBodyParams: async ({ variables }) => variables,
 
-    mapResponse: async(response) => {
-      const json : CreateResponse = await response.json();
-
-      return json.data ?? [];
-    }
+    mapResponse: async (response) => {
+      const json: CreateResponse = await response.json();
+      return json.data ?? {};
+    },
   },
 
   getOne: {
-    getEndpoint:({resource, id }) => `${resource}/${id}`,
-    mapResponse: async(response) => {
+    getEndpoint: ({ resource, id }) => `${resource}/${id}`,
+    mapResponse: async (response) => {
+      const json: GetOneResponse = await response.json();
+      return json.data ?? null;
+    },
+  },
+};
 
-      if(!response.ok) throw await buildHttpError(response)
-            const json : GetOneResponse = await response.json();
-            return json.data ?? null;
-    }
-  }
-}
-
-const {dataProvider } = createDataProvider(BACKEND_BASE_URL, options);
+const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options);
 
 export { dataProvider };
-
-// import  {DataProvider, GetListParams, BaseRecord, GetListResponse} from "@refinedev/core";
-// import {MOCK_SUBJECTS} from "@/constants/mock-data.ts";
-//
-//
-// export const dataProvider: DataProvider = {
-//   getList : async <TData extends BaseRecord = BaseRecord> ({ resource } : GetListParams): Promise<GetListResponse<TData>> => {
-//     if(resource !== 'subjects' ){
-//       return   { data : [] as TData[], total:0 };
-//     }
-//     return { data : MOCK_SUBJECTS as unknown as TData[] , total: MOCK_SUBJECTS.length , }
-//   },
-//   getOne : async() => {
-//     throw new Error('This function is not present in mock')
-//   },
-//   create : async() => {
-//       throw new Error('This function is not present in mock')
-//   },
-//   update : async() => {
-//     throw new Error('This function is not present in mock')
-//   },
-//   deleteOne : async() => {
-//     throw new Error('This function is not present in mock')
-//   },
-//
-//   getApiUrl: () => '',
-// }
-
