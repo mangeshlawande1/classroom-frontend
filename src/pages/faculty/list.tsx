@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTable } from "@refinedev/react-table";
 import { useSearchParams } from "react-router";
@@ -14,10 +14,27 @@ import { ShowButton } from "@/components/refine-ui/buttons/show";
 import type { User } from "@/types";
 
 const FacultyList = () => {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState(
         searchParams.get("search") ?? ""
     );
+
+    // Sync searchQuery to URL params
+    useEffect(() => {
+        if (searchQuery) {
+            setSearchParams({ search: searchQuery });
+        } else {
+            setSearchParams({});
+        }
+    }, [searchQuery, setSearchParams]);
+
+    // Sync URL params to searchQuery
+    useEffect(() => {
+        const urlSearch = searchParams.get("search") ?? "";
+        if (urlSearch !== searchQuery) {
+            setSearchQuery(urlSearch);
+        }
+    }, [searchParams]);
 
     const facultyColumns = useMemo<ColumnDef<User>[]>(
         () => [

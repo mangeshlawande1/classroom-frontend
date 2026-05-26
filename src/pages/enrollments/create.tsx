@@ -63,19 +63,27 @@ const EnrollmentsCreate = () => {
     const onSubmit = async (values: EnrollFormValues) => {
         if (!currentUser?.id) return;
 
-        const response = await createEnrollment({
-            resource: "enrollments",
-            values: {
-                classId: values.classId,
-                studentId: currentUser.id,
-            },
-        });
+        try {
+            const response = await createEnrollment({
+                resource: "enrollments",
+                values: {
+                    classId: values.classId,
+                    studentId: currentUser.id,
+                },
+            });
 
-        navigate("/enrollments/confirm", {
-            state: {
-                enrollment: response?.data,
-            },
-        });
+            navigate("/enrollments/confirm", {
+                state: {
+                    enrollment: response?.data,
+                },
+            });
+        } catch (error) {
+            console.error("Enrollment failed:", error);
+            form.setError("root", {
+                type: "manual",
+                message: error instanceof Error ? error.message : "Failed to create enrollment. Please try again.",
+            });
+        }
     };
 
     const isSubmitDisabled =

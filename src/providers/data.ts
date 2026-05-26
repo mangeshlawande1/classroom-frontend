@@ -52,11 +52,17 @@ const options: CreateDataProviderOptions = {
     },
 
     mapResponse: async (response) => {
+      if (!response.ok) {
+        throw response;
+      }
       const payload: ListResponse = await response.json();
       return payload.data ?? [];
     },
 
     getTotalCount: async (response) => {
+      if (!response.ok) {
+        throw response;
+      }
       const payload: ListResponse = await response.json();
       return payload.pagination?.total ?? payload.data?.length ?? 0;
     },
@@ -68,6 +74,9 @@ const options: CreateDataProviderOptions = {
     buildBodyParams: async ({ variables }) => variables,
 
     mapResponse: async (response) => {
+      if (!response.ok) {
+        throw response;
+      }
       const json: CreateResponse = await response.json();
       return json.data ?? {};
     },
@@ -76,6 +85,9 @@ const options: CreateDataProviderOptions = {
   getOne: {
     getEndpoint: ({ resource, id }) => `${resource}/${id}`,
     mapResponse: async (response) => {
+      if (!response.ok) {
+        throw response;
+      }
       const json: GetOneResponse = await response.json();
       return json.data ?? null;
     },
