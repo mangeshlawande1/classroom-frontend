@@ -276,10 +276,13 @@ const DepartmentShow = () => {
     const subjectsTable = useTable<DepartmentSubject>({
         columns: subjectColumns,
         refineCoreProps: {
-            resource: `departments/${departmentId}/subjects`,
+            resource: details ? `departments/${departmentId}/subjects` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
+            },
+            queryOptions: {
+                enabled: !!details,
             },
         },
     });
@@ -287,10 +290,13 @@ const DepartmentShow = () => {
     const classesTable = useTable<DepartmentClass>({
         columns: classColumns,
         refineCoreProps: {
-            resource: `departments/${departmentId}/classes`,
+            resource: details ? `departments/${departmentId}/classes` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
+            },
+            queryOptions: {
+                enabled: !!details,
             },
         },
     });
@@ -298,7 +304,7 @@ const DepartmentShow = () => {
     const teachersTable = useTable<DepartmentUser>({
         columns: userColumns,
         refineCoreProps: {
-            resource: `departments/${departmentId}/users`,
+            resource: details ? `departments/${departmentId}/users` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
@@ -312,13 +318,16 @@ const DepartmentShow = () => {
                     },
                 ],
             },
+            queryOptions: {
+                enabled: !!details,
+            },
         },
     });
 
     const studentsTable = useTable<DepartmentUser>({
         columns: userColumns,
         refineCoreProps: {
-            resource: `departments/${departmentId}/users`,
+            resource: details ? `departments/${departmentId}/users` : undefined,
             pagination: {
                 pageSize: 10,
                 mode: "server",
@@ -331,6 +340,9 @@ const DepartmentShow = () => {
                         value: "student",
                     },
                 ],
+            },
+            queryOptions: {
+                enabled: !!details,
             },
         },
     });

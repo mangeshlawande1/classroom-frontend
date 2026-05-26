@@ -20,10 +20,11 @@ import {
 } from "@/components/ui/form";
 
 const departmentSchema = z.object({
-    code: z.string().min(2, "Department code must be at least 2 characters"),
-    name: z.string().min(3, "Department name must be at least 3 characters"),
+    code: z.string().trim().min(2, "Department code must be at least 2 characters"),
+    name: z.string().trim().min(3, "Department name must be at least 3 characters"),
     description: z
         .string()
+        .trim()
         .min(5, "Department description must be at least 5 characters"),
 });
 
@@ -53,11 +54,7 @@ const DepartmentsCreate = () => {
     } = form;
 
     const onSubmit = async (values: DepartmentFormValues) => {
-        try {
-            await onFinish(values);
-        } catch (error) {
-            console.error("Error creating department:", error);
-        }
+        await onFinish(values);
     };
 
     return (
